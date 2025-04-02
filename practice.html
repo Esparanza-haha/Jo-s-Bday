@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Belle!</title>
+    <link rel="stylesheet" href="practice.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.2/dist/index.umd.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎉 Happy Birthday, Jo! 🎂</h1>
+        <p class="message">Wishing you a day filled with love, laughter, and all the happiness in the world! 🎈🎁</p>
+        
+        <!-- Slideshow -->
+        <div class="slideshow-container">
+            <div class="slide fade"><img src="photo_1_2025-04-02_15-54-09.jpg" alt="Belle Image 1"></div>
+            <div class="slide fade"><img src="photo_2_2025-04-02_15-54-09.jpg" alt="Belle Image 2"></div>
+            <div class="slide fade"><img src="photo_3_2025-04-02_15-54-09.jpg" alt="Belle Image 3"></div>
+        </div>
+
+        <button onclick="playSong()">Play Birthday Song 🎶</button>
+        <button id="surpriseBtn">Click for Surprise! 🎁</button>
+
+        <audio id="birthdaySong" src="HAPPY Birthday Song, Happy Birthday to You.mp3"></audio>
+    </div>
+    
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="container">
+        <h2>🎈 Pop the Hearts! ❤️</h2>
+        <p>Click on the hearts to pop them!</p>
+        <div id="score">Score: 0</div>
+        <div id="game-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    let audio = document.getElementById("birthdaySong");
+
+    // Try autoplaying (some browsers may block it)
+    audio.play().catch(() => {
+        console.log("Autoplay blocked, waiting for user interaction...");
+    });
+
+    // Ensure it plays when the user clicks anywhere
+    document.addEventListener("click", function () {
+        audio.play();
+    }, { once: true }); // Only run this once
+});
+
+// Fireworks Effect
+document.getElementById("surpriseBtn").addEventListener("click", function() {
+    const container = document.getElementById("fireworksCanvas");
+    const fireworks = new Fireworks.default(container, { 
+        autoresize: true, 
+        opacity: 0.6,
+        acceleration: 1.07,
+        friction: 0.96,
+        gravity: 1.5,
+        particles: 150,
+        trace: 4,
+        explosion: 6
+    });
+    fireworks.start();
+
+    setTimeout(() => {
+        fireworks.stop();
+        container.innerHTML = `<h1 style="color:#ff4d6d; text-align:center; font-size:24px;">Belle, you are the most beautiful thing that has ever happened to me. ❤️</h1>`;
+    }, 6000);
+});
+
+// Heart Popping Mini-Game
+let score = 0;
+function updateScore() {
+    document.getElementById("score").textContent = "Score: " + score;
+}
+
+function createHeart() {
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * (window.innerWidth - 50) + "px";
+    document.getElementById("game-container").appendChild(heart);
+
+    let speed = Math.random() * 3 + 2;
+    let pos = 0;
+    let interval = setInterval(() => {
+        if (pos > 350) {
+            heart.remove();
+            clearInterval(interval);
+        }
+        pos += speed;
+        heart.style.bottom = pos + "px";
+    }, 30);
+
+    heart.addEventListener("click", () => {
+        heart.remove();
+        clearInterval(interval);
+        score++;
+        updateScore();
+    });
+}
+
+setInterval(createHeart, 1000);
+document.addEventListener("DOMContentLoaded", function () {
+    let audio = document.getElementById("birthdaySong");
+    audio.volume = 0.1; // Set volume to 30% (Adjust as needed)
+
+    // Try autoplaying (some browsers may block it)
+    audio.play().catch(() => {
+        console.log("Autoplay blocked, waiting for user interaction...");
+    });
+
+    // Ensure it plays when the user clicks anywhere
+    document.addEventListener("click", function () {
+        audio.play();
+    }, { once: true }); // Only run this once
+});
+    </script>
+
+</body>
+</html>
